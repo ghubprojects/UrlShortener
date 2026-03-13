@@ -1,0 +1,180 @@
+dotnet ef migrations add InitialCreate --output-dir Persistence/Migrations
+
+Folder PATH listing for volume Windows-SSD
+Volume serial number is 6C1C-3521
+C:.
+¦   .gitattributes
+¦   .gitignore
+¦   README.md
+¦   structure.txt
+¦   UrlShortener.sln
+¦   
++---.github
+¦   +---workflows
++---aspire
+¦   +---UrlShortener.AppHost
+¦   ¦   ¦   AppHost.cs
+¦   ¦   ¦   appsettings.Development.json
+¦   ¦   ¦   appsettings.json
+¦   ¦   ¦   UrlShortener.AppHost.csproj
+¦   ¦   ¦   
+¦   ¦   ¦                   
+¦   ¦   +---Properties
+¦   ¦           launchSettings.json
+¦   ¦           
+¦   +---UrlShortener.ServiceDefaults
+¦       ¦   Extensions.cs
+¦       ¦   UrlShortener.ServiceDefaults.csproj
+¦       ¦   
+¦                           
++---sources
+¦   +---UrlShortener.Api
+¦   ¦   ¦   appsettings.Development.json
+¦   ¦   ¦   appsettings.json
+¦   ¦   ¦   DependencyInjection.cs
+¦   ¦   ¦   Program.cs
+¦   ¦   ¦   UrlShortener.Api.csproj
+¦   ¦   ¦   UrlShortener.Api.csproj.user
+¦   ¦   ¦   UrlShortener.Api.http
+¦   ¦   ¦   
+¦   ¦   +---Endpoints
+¦   ¦   ¦   +---V1
+¦   ¦   ¦           RedirectEndpoints.cs
+¦   ¦   ¦           ShortUrlEndpoints.cs
+¦   ¦   ¦           
+¦   ¦   +---Extensions
+¦   ¦   ¦       EndpointExtensions.cs
+¦   ¦   ¦       ResultExtensions.cs
+¦   ¦   ¦       
+¦   ¦   +---Properties
+¦   ¦           launchSettings.json
+¦   ¦           
+¦   +---UrlShortener.Application
+¦   ¦   ¦   DependencyInjection.cs
+¦   ¦   ¦   UrlShortener.Application.csproj
+¦   ¦   ¦   
+¦   ¦   +---Abstractions
+¦   ¦   ¦   +---IdProcesser
+¦   ¦   ¦           IIdEncoder.cs
+¦   ¦   ¦           IIdGenerator.cs
+¦   ¦   ¦           
+¦   ¦   ¦               
+¦   ¦   +---DomainEventHandlers
+¦   ¦   ¦       UrlVisitedDomainEventHandler.cs
+¦   ¦   ¦       
+¦   ¦   ¦                   
+¦   ¦   +---UseCases
+¦   ¦       +---CreateShortUrl
+¦   ¦       ¦       CreateShortUrlCommand.cs
+¦   ¦       ¦       CreateShortUrlCommandHandler.cs
+¦   ¦       ¦       CreateShortUrlResult.cs
+¦   ¦       ¦       
+¦   ¦       +---DeleteShortUrl
+¦   ¦       ¦       DeleteShortUrlCommand.cs
+¦   ¦       ¦       
+¦   ¦       +---DisableShortUrl
+¦   ¦       ¦       DisableShortUrlCommand.cs
+¦   ¦       ¦       
+¦   ¦       +---GetShortUrl
+¦   ¦       ¦       GetShortUrlQuery.cs
+¦   ¦       ¦       GetShortUrlQueryHandler.cs
+¦   ¦       ¦       GetShortUrlResult.cs
+¦   ¦       ¦       
+¦   ¦       +---GetVisits
+¦   ¦       ¦       GetVisitsQuery.cs
+¦   ¦       ¦       GetVisitsResult.cs
+¦   ¦       ¦       
+¦   ¦       +---Redirect
+¦   ¦               RedirectHandler.cs
+¦   ¦               RedirectQuery.cs
+¦   ¦               
+¦   +---UrlShortener.Domain
+¦   ¦   ¦   UrlShortener.Domain.csproj
+¦   ¦   ¦   
+¦   ¦   +---Aggregates
+¦   ¦   ¦   +---ShortUrls
+¦   ¦   ¦       ¦   IShortUrlRepository.cs
+¦   ¦   ¦       ¦   ShortCode.cs
+¦   ¦   ¦       ¦   ShortUrl.cs
+¦   ¦   ¦       ¦   Url.cs
+¦   ¦   ¦       ¦   
+¦   ¦   ¦       +---Errors
+¦   ¦   ¦               ShortCodeErrors.cs
+¦   ¦   ¦               ShortUrlErrors.cs
+¦   ¦   ¦               UrlErrors.cs
+¦   ¦   ¦               ¦   ¦   ¦               
+¦   ¦   +---Entities
+¦   ¦   ¦   +---Visits
+¦   ¦   ¦           IVisitRepository.cs
+¦   ¦   ¦           Visit.cs
+¦   ¦   ¦           VisitErrors.cs
+¦   ¦   ¦           
+¦   ¦   +---Events
+¦   ¦   ¦       UrlVisitedDomainEvent.cs
+¦   ¦   ¦       
+¦   ¦   ¦                   
+¦   ¦   +---SeedWork
+¦   ¦           AggregateRoot.cs
+¦   ¦           DomainEvent.cs
+¦   ¦           Entity.cs
+¦   ¦           IAggregateRoot.cs
+¦   ¦           IDomainEvent.cs
+¦   ¦           IRepository.cs
+¦   ¦           IUnitOfWork.cs
+¦   ¦           ValueObject.cs
+¦   ¦           
+¦   +---UrlShortener.Infrastructure
+¦   ¦   ¦   DependencyInjection.cs
+¦   ¦   ¦   UrlShortener.Infrastructure.csproj
+¦   ¦   ¦   
+¦   ¦   +---Encoding
+¦   ¦   ¦       Base62Encoder.cs
+¦   ¦   ¦       OptimusObfuscator.cs
+¦   ¦   ¦       
+¦   ¦   +---IdProcesser
+¦   ¦   ¦       IdEncoder.cs
+¦   ¦   ¦       IdGenerator.cs
+¦   ¦   ¦       
+¦   ¦   ¦                   
+¦   ¦   +---Options
+¦   ¦   ¦       OptimusOptions.cs
+¦   ¦   ¦       
+¦   ¦   +---Persistence
+¦   ¦       +---DataContext
+¦   ¦       ¦       AppDbContext.cs
+¦   ¦       ¦       AppDbContextFactory.cs
+¦   ¦       ¦       
+¦   ¦       +---EntityConfigurations
+¦   ¦       ¦       ShortUrlConfiguration.cs
+¦   ¦       ¦       VisitConfiguration.cs
+¦   ¦       ¦       
+¦   ¦       +---Extensions
+¦   ¦       ¦       MediatorExtension.cs
+¦   ¦       ¦       
+¦   ¦       +---Migrations
+¦   ¦       ¦       20260317085710_InitialCreate.cs
+¦   ¦       ¦       20260317085710_InitialCreate.Designer.cs
+¦   ¦       ¦       AppDbContextModelSnapshot.cs
+¦   ¦       ¦       
+¦   ¦       +---Repositories
+¦   ¦               ShortUrlRepository.cs
+¦   ¦               
+¦   +---UrlShortener.Migrator
+¦   ¦   ¦   Program.cs
+¦   ¦   ¦   UrlShortener.Migrator.csproj
+¦   ¦   ¦   
+¦   ¦                       
+¦   +---UrlShortener.Shared
+¦       ¦   UrlShortener.Shared.csproj
+¦       +---Results
+¦               Error.cs
+¦               ErrorType.cs
+¦               PagedResult.cs
+¦               Result.cs
+¦               ResultT.cs
+¦               
++---tests
+    +---UrlShortener.Application.Tests
+        ¦   UnitTest1.cs
+        ¦   UrlShortener.Application.Tests.csproj
+        ¦   
