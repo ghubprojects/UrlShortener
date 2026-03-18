@@ -7,17 +7,15 @@ namespace UrlShortener.Infrastructure.Persistence.Interceptors;
 
 public class DispatchDomainEventsInterceptor(IMediator mediator) : SaveChangesInterceptor
 {
-    public override async ValueTask<int> SavedChangesAsync(
-        SaveChangesCompletedEventData eventData,
-        int result,
+    public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
+        DbContextEventData eventData,
+        InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
     {
-        if (eventData.Context is not AppDbContext context)
-            return await base.SavedChangesAsync(eventData, result, cancellationToken);
+        if (eventData.Context is AppDbContext context)
+            await DispatchDomainEventsAsync(context);
 
-        await DispatchDomainEventsAsync(context);
-
-        return await base.SavedChangesAsync(eventData, result, cancellationToken);
+        return await base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
     private async Task DispatchDomainEventsAsync(AppDbContext context)
