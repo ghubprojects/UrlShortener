@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using UrlShortener.Api.Extensions;
-using UrlShortener.Application.UseCases.Redirect;
+using UrlShortener.Application.Features.Redirecting.UseCases.Redirect;
 
 namespace UrlShortener.Api.Endpoints.Public;
 

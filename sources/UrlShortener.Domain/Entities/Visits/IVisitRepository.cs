@@ -20,4 +20,6 @@ public interface IVisitRepository
         Guid shortUrlId,
         DateTime since,
         CancellationToken cancellationToken = default);
+
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

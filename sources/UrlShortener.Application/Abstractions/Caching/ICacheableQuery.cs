@@ -1,0 +1,7 @@
+﻿namespace UrlShortener.Application.Abstractions.Caching;
+
+public interface ICacheableQuery<TResponse>
+{
+    string CacheKey { get; }
+    TimeSpan? Expiration { get; }
+}
