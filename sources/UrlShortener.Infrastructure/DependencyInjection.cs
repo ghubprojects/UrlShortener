@@ -5,14 +5,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using UrlShortener.Application.Abstractions.IdProcesser;
+using UrlShortener.Application.Abstractions.TransactionalOutbox;
+using UrlShortener.Application.IntegrationEvents;
 using UrlShortener.Domain.Aggregates.ShortUrls;
 using UrlShortener.Domain.Entities.Visits;
 using UrlShortener.Infrastructure.Encoding;
 using UrlShortener.Infrastructure.IdProcesser;
+using UrlShortener.Infrastructure.Messaging;
 using UrlShortener.Infrastructure.Options;
 using UrlShortener.Infrastructure.Persistence.DataContext;
 using UrlShortener.Infrastructure.Persistence.Interceptors;
 using UrlShortener.Infrastructure.Persistence.Repositories;
+using UrlShortener.Infrastructure.TransactionalOutbox;
+using UrlShortener.Shared.EventBus.Abstractions;
+using UrlShortener.Shared.EventBus.Extensions;
 
 namespace UrlShortener.Infrastructure;
 
@@ -32,7 +38,7 @@ public static class DependencyInjection
             options.UseNpgsql(configuration.GetConnectionString("urlshortenerdb"))
                 .UseSnakeCaseNamingConvention();
 
-            foreach(var interceptor in serviceProvider.GetServices<SaveChangesInterceptor>())
+            foreach (var interceptor in serviceProvider.GetServices<SaveChangesInterceptor>())
                 options.AddInterceptors(interceptor);
         });
 
@@ -44,10 +50,14 @@ public static class DependencyInjection
         // Add repositories
         services.AddScoped<IShortUrlRepository, ShortUrlRepository>();
         services.AddScoped<IVisitRepository, VisitRepository>();
+        services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
 
         // Add ID processing services
         services.AddSingleton<IIdGenerator, IdGenerator>();
         services.AddSingleton<IIdEncoder, IdEncoder>();
+
+        services.AddRedisStreamEventBus()
+            .AddSubscription<UrlVisitedIntegrationEvent, UrlVisitedIntegrationEventHandler>();
 
         // Add obfuscator
         services.AddSingleton<OptimusObfuscator>(sp =>
@@ -57,5 +67,17 @@ public static class DependencyInjection
         });
 
         return builder;
+    }
+
+    private static IEventBusBuilder AddRedisStreamEventBus(this IServiceCollection services)
+    {
+        services.AddSingleton<IEventBus, RedisStreamEventBus>();
+
+        return new EventBusBuilder(services);
+    }
+
+    private class EventBusBuilder(IServiceCollection services) : IEventBusBuilder
+    {
+        public IServiceCollection Services => services;
     }
 }

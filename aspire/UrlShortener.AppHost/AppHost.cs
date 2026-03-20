@@ -2,7 +2,8 @@ using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-// Add PostgreSQL
+var redis = builder.AddRedis("redis");
+
 var postgres = builder.AddPostgres("postgres")
     .WithImageTag("latest")
     .WithVolume("urlshortenerdb", "/var/lib/postgresql")
@@ -15,9 +16,11 @@ var migrationService = builder.AddProject<UrlShortener_MigrationService>("migrat
     .WithReference(database)
     .WaitFor(database);
 
-builder.AddProject<UrlShortener_Api>("api")
+var api = builder.AddProject<UrlShortener_Api>("api")
     .WithReference(database)
+    .WithReference(redis)
     .WaitFor(database)
     .WaitForCompletion(migrationService);
+redis.WithParentRelationship(api);
 
 builder.Build().Run();

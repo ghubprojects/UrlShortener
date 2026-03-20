@@ -11,7 +11,7 @@ builder.AddServiceDefaults();
 // Add services to the container
 builder.Services.AddApplicationServices();
 builder.AddInfrastructureServices();
-builder.Services.AddWebApiServices();
+builder.AddWebApiServices();
 
 var app = builder.Build();
 

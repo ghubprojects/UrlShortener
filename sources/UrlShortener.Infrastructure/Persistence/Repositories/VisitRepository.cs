@@ -1,4 +1,5 @@
-﻿using UrlShortener.Domain.Entities.Visits;
+﻿using Microsoft.EntityFrameworkCore;
+using UrlShortener.Domain.Entities.Visits;
 using UrlShortener.Infrastructure.Persistence.DataContext;
 
 namespace UrlShortener.Infrastructure.Persistence.Repositories;
@@ -23,5 +24,10 @@ public sealed class VisitRepository(AppDbContext context) : IVisitRepository
     public Task<IReadOnlyList<Visit>> GetByShortUrlIdAsync(Guid shortUrlId, int page, int pageSize, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
+    }
+
+    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return context.SaveChangesAsync(cancellationToken);
     }
 }

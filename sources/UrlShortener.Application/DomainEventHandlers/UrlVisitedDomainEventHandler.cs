@@ -1,17 +1,17 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
-using UrlShortener.Domain.Entities.Visits;
+using System.Text.Json;
+using UrlShortener.Application.Abstractions.TransactionalOutbox;
+using UrlShortener.Application.IntegrationEvents;
 using UrlShortener.Domain.Events;
 
 namespace UrlShortener.Application.DomainEventHandlers;
 
-public class UrlVisitedDomainEventHandler(
-    IVisitRepository repository,
-    ILogger<UrlVisitedDomainEventHandler> logger) : INotificationHandler<UrlVisitedDomainEvent>
+public class UrlVisitedDomainEventHandler(IOutboxMessageRepository repository)
+    : INotificationHandler<UrlVisitedDomainEvent>
 {
     public async Task Handle(UrlVisitedDomainEvent domainEvent, CancellationToken cancellationToken)
     {
-        var visitResult = Visit.Create(
+        var integrationEvent = new UrlVisitedIntegrationEvent(
             domainEvent.ShortUrlId,
             domainEvent.ShortCode,
             domainEvent.VisitedAt,
@@ -19,15 +19,10 @@ public class UrlVisitedDomainEventHandler(
             domainEvent.UserAgent,
             domainEvent.Referer);
 
-        if (visitResult.IsFailure)
-        {
-            logger.LogError("Failed to create visit for short URL with ID {ShortUrlId}: {Errors}",
-                domainEvent.ShortUrlId, 
-                visitResult.Error.Message);
+        var message = new OutboxMessage(
+            JsonSerializer.Serialize(integrationEvent),
+            integrationEvent.GetType().FullName!);
 
-            return;
-        }
-
-        await repository.AddAsync(visitResult.Value, cancellationToken);
+        await repository.AddAsync(message, cancellationToken);
     }
 }
