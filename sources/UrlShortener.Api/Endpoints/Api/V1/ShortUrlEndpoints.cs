@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using UrlShortener.Api.Extensions;
-using UrlShortener.Application.UseCases.CreateShortUrl;
+using UrlShortener.Application.Features.ShortUrlManagement.UseCases.CreateShortUrl;
 
 namespace UrlShortener.Api.Endpoints.Api.V1;
 

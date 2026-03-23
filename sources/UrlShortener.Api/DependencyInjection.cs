@@ -4,8 +4,10 @@ namespace UrlShortener.Api;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddWebApiServices(this IServiceCollection services)
+    public static IHostApplicationBuilder AddWebApiServices(this IHostApplicationBuilder builder)
     {
+        var services = builder.Services;
+
         services.AddOpenApi();
 
         services.AddApiVersioning(
@@ -19,6 +21,8 @@ public static class DependencyInjection
             }
         );
 
-        return services;
+        builder.AddRedisClient("redis");
+
+        return builder;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using UrlShortener.Application.Abstractions.TransactionalOutbox;
 using UrlShortener.Domain.Aggregates.ShortUrls;
 using UrlShortener.Domain.Entities.Visits;
 using UrlShortener.Domain.SeedWork;
@@ -10,6 +11,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 {
     public DbSet<ShortUrl> ShortUrls { get; set; }
     public DbSet<Visit> Visits { get; set; }
+    public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
