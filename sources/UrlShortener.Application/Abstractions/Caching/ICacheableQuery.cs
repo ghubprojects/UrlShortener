@@ -1,6 +1,6 @@
 ﻿namespace UrlShortener.Application.Abstractions.Caching;
 
-public interface ICacheableQuery<TResponse>
+public interface ICacheableQuery
 {
     string CacheKey { get; }
     TimeSpan? Expiration { get; }

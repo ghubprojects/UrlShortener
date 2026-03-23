@@ -21,8 +21,6 @@ public static class DependencyInjection
             }
         );
 
-        builder.AddRedisClient("redis");
-
         return builder;
     }
 }

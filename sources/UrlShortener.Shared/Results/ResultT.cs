@@ -1,4 +1,6 @@
-﻿namespace UrlShortener.Shared.Results;
+﻿using System.Text.Json.Serialization;
+
+namespace UrlShortener.Shared.Results;
 
 /// <summary>
 /// Represents a result of an operation with a value
@@ -18,6 +20,7 @@ public class Result<T> : Result
         }
     }
 
+    [JsonConstructor]
     protected Result(bool isSuccess, T? value, Error error) : base(isSuccess, error)
     {
         _value = value;

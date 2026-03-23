@@ -4,11 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using UrlShortener.Application.Abstractions.Caching;
 using UrlShortener.Application.Abstractions.IdProcesser;
 using UrlShortener.Application.Abstractions.TransactionalOutbox;
 using UrlShortener.Application.IntegrationEvents;
 using UrlShortener.Domain.Aggregates.ShortUrls;
 using UrlShortener.Domain.Entities.Visits;
+using UrlShortener.Infrastructure.Caching;
 using UrlShortener.Infrastructure.Encoding;
 using UrlShortener.Infrastructure.IdProcesser;
 using UrlShortener.Infrastructure.Messaging;
@@ -47,6 +49,10 @@ public static class DependencyInjection
 
         builder.EnrichNpgsqlDbContext<AppDbContext>();
 
+        // Add caching
+        builder.AddRedisClient("redis");
+        services.AddSingleton<ICacheService, RedisCacheService>();
+
         // Add repositories
         services.AddScoped<IShortUrlRepository, ShortUrlRepository>();
         services.AddScoped<IVisitRepository, VisitRepository>();
@@ -56,6 +62,7 @@ public static class DependencyInjection
         services.AddSingleton<IIdGenerator, IdGenerator>();
         services.AddSingleton<IIdEncoder, IdEncoder>();
 
+        // Add event bus and integration event handlers
         services.AddEventBus()
             .AddSubscription<UrlVisitedIntegrationEvent, UrlVisitedIntegrationEventHandler>();
 

@@ -9,8 +9,8 @@ public sealed record RedirectQuery(
     string? IpAddress,
     string? UserAgent,
     string? Referer
-) : IRequest<Result<string>>, ICacheableQuery<Result<string>>
+) : IRequest<Result<string>>, ICacheableQuery
 {
     public string CacheKey => $"url:{Code}";
-    public TimeSpan? Expiration => TimeSpan.FromMinutes(30);
+    public TimeSpan? Expiration => TimeSpan.FromMinutes(10);
 }
